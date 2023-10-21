@@ -16,15 +16,15 @@ public class UserValidator : AbstractValidator<User>
         RuleFor(c => c.Email)
             .NotEmpty()
             .WithMessage("O email não pode ser vazio.")
-            .Length(8, 50)
-            .WithMessage("O email precisa ter mais de 8 e menos de 50 caracteres.")
+            .Length(8, 80)
+            .WithMessage("O email precisa ter mais de 8 e menos de 80 caracteres.")
             .EmailAddress()
             .WithMessage("Digite um email válido.");
 
         RuleFor(c => c.Senha)
             .NotEmpty()
             .WithMessage("A senha não pode ser vazia.")
-            .Length(6, 20)
-            .WithMessage("A senha precisa ter mais de 6 e menos de 20 caracteres.");
+            .Length(6, 25)
+            .WithMessage("A senha precisa ter mais de 6 e menos de 25 caracteres.");
     }
 }
