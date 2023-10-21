@@ -28,6 +28,8 @@ namespace CRM.Infra.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Senha = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    Foto = table.Column<string>(type: "longtext", nullable: true, collation: "utf8mb4_0900_ai_ci")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     CriadoEm = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     AtualizadoEm = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
@@ -92,6 +94,7 @@ namespace CRM.Infra.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     Nome = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Valor = table.Column<float>(type: "float", nullable: false),
@@ -109,6 +112,12 @@ namespace CRM.Infra.Migrations
                         column: x => x.CarrinhoId,
                         principalTable: "Carrinhos",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Produtos_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4")
                 .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
@@ -280,6 +289,11 @@ namespace CRM.Infra.Migrations
                 name: "IX_Produtos_CarrinhoId",
                 table: "Produtos",
                 column: "CarrinhoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Produtos_UserId",
+                table: "Produtos",
+                column: "UserId");
         }
 
         /// <inheritdoc />

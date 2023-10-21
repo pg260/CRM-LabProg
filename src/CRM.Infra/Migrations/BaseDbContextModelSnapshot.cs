@@ -176,12 +176,17 @@ namespace CRM.Infra.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.Property<float>("Valor")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CarrinhoId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Produtos");
                 });
@@ -236,6 +241,9 @@ namespace CRM.Infra.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Foto")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Nome")
@@ -332,6 +340,14 @@ namespace CRM.Infra.Migrations
                     b.HasOne("CRM.Domain.Entities.Carrinho", null)
                         .WithMany("Produtos")
                         .HasForeignKey("CarrinhoId");
+
+                    b.HasOne("CRM.Domain.Entities.User", "User")
+                        .WithMany("Produtos")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CRM.Domain.Entities.ProdutoCarrinho", b =>
@@ -386,6 +402,8 @@ namespace CRM.Infra.Migrations
                     b.Navigation("Feedbacks");
 
                     b.Navigation("HistoricoCompras");
+
+                    b.Navigation("Produtos");
                 });
 #pragma warning restore 612, 618
         }

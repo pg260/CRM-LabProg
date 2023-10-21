@@ -1,7 +1,10 @@
 ﻿using System.Reflection;
 using AutoMapper;
 using CRM.Infra;
+using CRM.Service.Contracts;
 using CRM.Service.MapperConfig;
+using CRM.Service.NotificatorConfig;
+using CRM.Service.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,7 +23,8 @@ public static class DependencyInjection
 
     public static void AddServices(this IServiceCollection services)
     {
-
+        services.AddScoped<INotificator, Notificator>();
+        services.AddScoped<IUserService, UserService>();
     }
 
     public static void CreateAutomapper(this IServiceCollection services)

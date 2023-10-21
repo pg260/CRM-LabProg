@@ -1,6 +1,8 @@
 ﻿using CRM.Core.Authorization;
 using CRM.Core.Extensions;
+using CRM.Domain.Contracts.Repositories;
 using CRM.Infra.Context;
+using CRM.Infra.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -30,7 +32,7 @@ public static class DependencyInjectionInfra
 
     public static void AddRepositories(this IServiceCollection services)
     {
-        
+        services.AddScoped<IUserRepository, UserRepository>();
     }
 
     public static void UseMigrations(IServiceProvider services)

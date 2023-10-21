@@ -24,6 +24,8 @@ public class UserMapping : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(25);
 
+        builder.Property(c => c.Foto);
+
         builder.Property(c => c.CriadoEm)
             .IsRequired();
 
@@ -35,13 +37,7 @@ public class UserMapping : IEntityTypeConfiguration<User>
             .HasForeignKey(h => h.UserId)
             .HasPrincipalKey(c => c.Id)
             .OnDelete(DeleteBehavior.Cascade);
-        
-        // builder.HasOne(c => c.Carrinho)
-        //     .WithOne(r => r.Usuario)
-        //     .HasForeignKey<Carrinho>(r => r.UserId)
-        //     .HasPrincipalKey<User>(c => c.Id)
-        //     .OnDelete(DeleteBehavior.Cascade);
-        
+
         builder.HasMany(c => c.Compras)
             .WithOne(h => h.User)
             .HasForeignKey(h => h.UserId)
@@ -49,6 +45,12 @@ public class UserMapping : IEntityTypeConfiguration<User>
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.HasMany(c => c.Feedbacks)
+            .WithOne(h => h.User)
+            .HasForeignKey(h => h.UserId)
+            .HasPrincipalKey(c => c.Id)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.HasMany(c => c.Produtos)
             .WithOne(h => h.User)
             .HasForeignKey(h => h.UserId)
             .HasPrincipalKey(c => c.Id)

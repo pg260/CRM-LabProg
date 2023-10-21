@@ -10,6 +10,9 @@ public class ProdutoMapping : IEntityTypeConfiguration<Produto>
     {
         builder.HasKey(c => c.Id);
 
+        builder.Property(c => c.UserId)
+            .IsRequired();
+
         builder.Property(c => c.Nome)
             .IsRequired()
             .HasMaxLength(30);
