@@ -35,4 +35,8 @@
       <Folder Include="Migrations" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Convertions\DateOnlyCustomConverter.cs" />
+    </ItemGroup>
+
 </Project>

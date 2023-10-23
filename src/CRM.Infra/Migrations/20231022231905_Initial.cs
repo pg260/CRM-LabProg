@@ -21,17 +21,15 @@ namespace CRM.Infra.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    CarrinhoId = table.Column<int>(type: "int", nullable: true),
                     Nome = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Senha = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Foto = table.Column<string>(type: "longtext", nullable: true, collation: "utf8mb4_0900_ai_ci")
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    CriadoEm = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    AtualizadoEm = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    Foto = table.Column<byte[]>(type: "longblob", nullable: true),
+                    CriadoEm = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AtualizadoEm = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,8 +46,8 @@ namespace CRM.Infra.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     ValorTotal = table.Column<float>(type: "float", nullable: false),
-                    CriadoEm = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    AtualizadoEm = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    CriadoEm = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AtualizadoEm = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -72,8 +70,8 @@ namespace CRM.Infra.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     ValorHistorico = table.Column<float>(type: "float", nullable: false),
-                    CriadoEm = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    AtualizadoEm = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    CriadoEm = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AtualizadoEm = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -101,8 +99,8 @@ namespace CRM.Infra.Migrations
                     Descricao = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CarrinhoId = table.Column<int>(type: "int", nullable: true),
-                    CriadoEm = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    AtualizadoEm = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    CriadoEm = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AtualizadoEm = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -134,8 +132,8 @@ namespace CRM.Infra.Migrations
                     Quantidade = table.Column<int>(type: "int", nullable: false),
                     ValorTotal = table.Column<float>(type: "float", nullable: false),
                     HistoricoComprasId = table.Column<int>(type: "int", nullable: false),
-                    CriadoEm = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    AtualizadoEm = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    CriadoEm = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AtualizadoEm = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -172,8 +170,8 @@ namespace CRM.Infra.Migrations
                     CarrinhoId = table.Column<int>(type: "int", nullable: false),
                     Quantidade = table.Column<int>(type: "int", nullable: false),
                     ValorTotal = table.Column<float>(type: "float", nullable: false),
-                    CriadoEm = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    AtualizadoEm = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    CriadoEm = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AtualizadoEm = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -206,8 +204,8 @@ namespace CRM.Infra.Migrations
                     Avaliacao = table.Column<int>(type: "int", nullable: false),
                     Comentarios = table.Column<string>(type: "longtext", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CriadoEm = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    AtualizadoEm = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    CriadoEm = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AtualizadoEm = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {

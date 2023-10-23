@@ -30,10 +30,10 @@ namespace CRM.Infra.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("AtualizadoEm")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTime>("CriadoEm")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -56,10 +56,10 @@ namespace CRM.Infra.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("AtualizadoEm")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTime>("CriadoEm")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
                     b.Property<int>("HistoricoComprasId")
                         .HasColumnType("int");
@@ -97,7 +97,7 @@ namespace CRM.Infra.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("AtualizadoEm")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
                     b.Property<int>("Avaliacao")
                         .HasColumnType("int");
@@ -109,7 +109,7 @@ namespace CRM.Infra.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CriadoEm")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
                     b.Property<int>("ProdutoId")
                         .HasColumnType("int");
@@ -135,10 +135,10 @@ namespace CRM.Infra.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("AtualizadoEm")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTime>("CriadoEm")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -160,13 +160,13 @@ namespace CRM.Infra.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("AtualizadoEm")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
                     b.Property<int?>("CarrinhoId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CriadoEm")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -198,13 +198,13 @@ namespace CRM.Infra.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("AtualizadoEm")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
                     b.Property<int>("CarrinhoId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CriadoEm")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
                     b.Property<int>("ProdutoId")
                         .HasColumnType("int");
@@ -231,20 +231,17 @@ namespace CRM.Infra.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("AtualizadoEm")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int?>("CarrinhoId")
-                        .HasColumnType("int");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTime>("CriadoEm")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Foto")
-                        .HasColumnType("longtext");
+                    b.Property<byte[]>("Foto")
+                        .HasColumnType("longblob");
 
                     b.Property<string>("Nome")
                         .IsRequired()
