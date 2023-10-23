@@ -26,10 +26,12 @@ public class CompraMapping : IEntityTypeConfiguration<Compra>
             .IsRequired();
         
         builder.Property(c => c.CriadoEm)
-            .IsRequired();
+            .IsRequired()
+            .HasColumnType("datetime");;
         
         builder.Property(c => c.AtualizadoEm)
-            .IsRequired();
+            .IsRequired()
+            .HasColumnType("datetime");;
         
         builder.HasMany(p => p.Feedbacks)
             .WithOne(c => c.Compra)

@@ -26,9 +26,11 @@ public class FeedbackMapping : IEntityTypeConfiguration<Feedback>
             .HasMaxLength(200);
         
         builder.Property(c => c.CriadoEm)
-            .IsRequired();
+            .IsRequired()
+            .HasColumnType("datetime");;
         
         builder.Property(c => c.AtualizadoEm)
-            .IsRequired();
+            .IsRequired()
+            .HasColumnType("datetime");;
     }
 }

@@ -23,9 +23,11 @@ public class ProdutoCarrinhoMapping : IEntityTypeConfiguration<ProdutoCarrinho>
             .IsRequired();
         
         builder.Property(c => c.CriadoEm)
-            .IsRequired();
+            .IsRequired()
+            .HasColumnType("datetime");;
         
         builder.Property(c => c.AtualizadoEm)
-            .IsRequired();
+            .IsRequired()
+            .HasColumnType("datetime");;
     }
 }

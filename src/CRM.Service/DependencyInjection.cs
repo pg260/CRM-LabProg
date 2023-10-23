@@ -25,6 +25,7 @@ public static class DependencyInjection
     {
         services.AddScoped<INotificator, Notificator>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IHashService, HashService>();
     }
 
     public static void CreateAutomapper(this IServiceCollection services)

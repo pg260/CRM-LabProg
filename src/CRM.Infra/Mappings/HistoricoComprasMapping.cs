@@ -17,10 +17,12 @@ public class HistoricoComprasMapping : IEntityTypeConfiguration<HistoricoCompras
             .IsRequired();
         
         builder.Property(c => c.CriadoEm)
-            .IsRequired();
+            .IsRequired()
+            .HasColumnType("datetime");;
         
         builder.Property(c => c.AtualizadoEm)
-            .IsRequired();
+            .IsRequired()
+            .HasColumnType("datetime");;
 
         builder.HasMany(c => c.Compras)
             .WithOne(r => r.HistoricoCompras)

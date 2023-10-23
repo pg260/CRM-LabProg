@@ -10,8 +10,6 @@ public class UserMapping : IEntityTypeConfiguration<User>
     {
         builder.HasKey(c => c.Id);
 
-        builder.Property(c => c.CarrinhoId);
-
         builder.Property(c => c.Nome)
             .IsRequired()
             .HasMaxLength(25);
@@ -27,10 +25,12 @@ public class UserMapping : IEntityTypeConfiguration<User>
         builder.Property(c => c.Foto);
 
         builder.Property(c => c.CriadoEm)
-            .IsRequired();
+            .IsRequired()
+            .HasColumnType("datetime");
 
         builder.Property(c => c.AtualizadoEm)
-            .IsRequired();
+            .IsRequired()
+            .HasColumnType("datetime");;
 
         builder.HasMany(c => c.HistoricoCompras)
             .WithOne(h => h.User)
