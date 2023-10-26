@@ -98,18 +98,16 @@ namespace CRM.Infra.Migrations
                     Valor = table.Column<float>(type: "float", nullable: false),
                     Descricao = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CarrinhoId = table.Column<int>(type: "int", nullable: true),
+                    Cidade = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Estado = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     CriadoEm = table.Column<DateTime>(type: "datetime", nullable: false),
                     AtualizadoEm = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Produtos", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Produtos_Carrinhos_CarrinhoId",
-                        column: x => x.CarrinhoId,
-                        principalTable: "Carrinhos",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Produtos_Users_UserId",
                         column: x => x.UserId,
@@ -169,7 +167,6 @@ namespace CRM.Infra.Migrations
                     ProdutoId = table.Column<int>(type: "int", nullable: false),
                     CarrinhoId = table.Column<int>(type: "int", nullable: false),
                     Quantidade = table.Column<int>(type: "int", nullable: false),
-                    ValorTotal = table.Column<float>(type: "float", nullable: false),
                     CriadoEm = table.Column<DateTime>(type: "datetime", nullable: false),
                     AtualizadoEm = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
@@ -284,11 +281,6 @@ namespace CRM.Infra.Migrations
                 column: "ProdutoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Produtos_CarrinhoId",
-                table: "Produtos",
-                column: "CarrinhoId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Produtos_UserId",
                 table: "Produtos",
                 column: "UserId");
@@ -307,13 +299,13 @@ namespace CRM.Infra.Migrations
                 name: "Compras");
 
             migrationBuilder.DropTable(
+                name: "Carrinhos");
+
+            migrationBuilder.DropTable(
                 name: "HistoricoCompras");
 
             migrationBuilder.DropTable(
                 name: "Produtos");
-
-            migrationBuilder.DropTable(
-                name: "Carrinhos");
 
             migrationBuilder.DropTable(
                 name: "Users");

@@ -23,6 +23,14 @@ public class ProdutoMapping : IEntityTypeConfiguration<Produto>
         
         builder.Property(c => c.Valor)
             .IsRequired();
+
+        builder.Property(c => c.Cidade)
+            .IsRequired()
+            .HasMaxLength(100);
+
+        builder.Property(c => c.Estado)
+            .IsRequired()
+            .HasMaxLength(100);
         
         builder.Property(c => c.CriadoEm)
             .IsRequired()

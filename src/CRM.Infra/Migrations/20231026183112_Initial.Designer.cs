@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRM.Infra.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20231022231905_Initial")]
+    [Migration("20231026183112_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace CRM.Infra.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .UseCollation("utf8mb4_0900_ai_ci")
-                .HasAnnotation("ProductVersion", "7.0.12")
+                .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.HasCharSet(modelBuilder, "utf8mb4");
@@ -165,13 +165,18 @@ namespace CRM.Infra.Migrations
                     b.Property<DateTime>("AtualizadoEm")
                         .HasColumnType("datetime");
 
-                    b.Property<int?>("CarrinhoId")
-                        .HasColumnType("int");
+                    b.Property<string>("Cidade")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("CriadoEm")
                         .HasColumnType("datetime");
 
                     b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Estado")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -186,8 +191,6 @@ namespace CRM.Infra.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CarrinhoId");
 
                     b.HasIndex("UserId");
 
@@ -214,9 +217,6 @@ namespace CRM.Infra.Migrations
 
                     b.Property<int>("Quantidade")
                         .HasColumnType("int");
-
-                    b.Property<float>("ValorTotal")
-                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -337,10 +337,6 @@ namespace CRM.Infra.Migrations
 
             modelBuilder.Entity("CRM.Domain.Entities.Produto", b =>
                 {
-                    b.HasOne("CRM.Domain.Entities.Carrinho", null)
-                        .WithMany("Produtos")
-                        .HasForeignKey("CarrinhoId");
-
                     b.HasOne("CRM.Domain.Entities.User", "User")
                         .WithMany("Produtos")
                         .HasForeignKey("UserId")
@@ -372,8 +368,6 @@ namespace CRM.Infra.Migrations
             modelBuilder.Entity("CRM.Domain.Entities.Carrinho", b =>
                 {
                     b.Navigation("ProdutoCarrinhos");
-
-                    b.Navigation("Produtos");
                 });
 
             modelBuilder.Entity("CRM.Domain.Entities.Compra", b =>
