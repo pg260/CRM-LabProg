@@ -18,9 +18,6 @@ public class ProdutoCarrinhoMapping : IEntityTypeConfiguration<ProdutoCarrinho>
         
         builder.Property(c => c.Quantidade)
             .IsRequired();
-
-        builder.Property(c => c.ValorTotal)
-            .IsRequired();
         
         builder.Property(c => c.CriadoEm)
             .IsRequired()

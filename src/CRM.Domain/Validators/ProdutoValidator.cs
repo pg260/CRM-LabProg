@@ -24,5 +24,17 @@ public class ProdutoValidator : AbstractValidator<Produto>
             .WithMessage("Defina um valor para o produto.")
             .GreaterThan(0)
             .WithMessage("O valor precisa ser maior que 0.");
+
+        RuleFor(c => c.Cidade)
+            .NotEmpty()
+            .WithMessage("Escolha a cidade em que o produto de encontra.")
+            .MaximumLength(100)
+            .WithMessage("O nome da cidade pode conter apenas 100 caracteres.");
+        
+        RuleFor(c => c.Estado)
+            .NotEmpty()
+            .WithMessage("Escolha o estado em que o produto de encontra.")
+            .MaximumLength(100)
+            .WithMessage("O nome do estado pode conter apenas 100 caracteres.");
     }
 }
