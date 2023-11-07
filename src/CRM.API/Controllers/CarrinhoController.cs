@@ -7,7 +7,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace CRM.API.Controllers;
 
-[Microsoft.AspNetCore.Components.Route("v1/Carrinho")]
+[Route("v1/Carrinho")]
 public class CarrinhoController : BaseController
 {
     public CarrinhoController(INotificator notificator, ICarrinhoService carrinhoService) : base(notificator)
