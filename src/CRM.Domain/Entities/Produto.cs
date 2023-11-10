@@ -8,6 +8,7 @@ public class Produto : BaseEntity
     public string Descricao { get; set; } = null!;
     public string Cidade { get; set; } = null!;
     public string Estado { get; set; } = null!;
+    public bool Desativado { get; set; }
 
     public virtual List<ProdutoCarrinho> ProdutoCarrinhos { get; set; } = new();
     public virtual List<Feedback> Feedbacks { get; set; } = new();

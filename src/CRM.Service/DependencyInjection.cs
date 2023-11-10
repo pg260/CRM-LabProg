@@ -25,6 +25,7 @@ public static class DependencyInjection
     {
         services.AddScoped<INotificator, Notificator>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IProdutoService, ProdutoService>();
         services.AddScoped<IHashService, HashService>();
     }
 

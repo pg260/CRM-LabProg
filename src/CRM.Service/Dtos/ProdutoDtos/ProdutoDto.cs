@@ -8,4 +8,5 @@ public class ProdutoDto
     public string Descricao { get; set; } = null!;
     public string Cidade { get; set; } = null!;
     public string Estado { get; set; } = null!;
+    public bool Desativado { get; set; }
 }

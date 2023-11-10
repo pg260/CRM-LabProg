@@ -33,6 +33,7 @@ public static class DependencyInjectionInfra
     public static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IProdutoRepository, ProdutoRepository>();
     }
 
     public static void UseMigrations(IServiceProvider services)
