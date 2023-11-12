@@ -3,6 +3,7 @@ using CRM.Service.Contracts;
 using CRM.Service.Dtos.PaginatedSearch;
 using CRM.Service.Dtos.UserDtos;
 using CRM.Service.NotificatorConfig;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -18,7 +19,7 @@ public class UserController : BaseController
 
     private readonly IUserService _userService;
     
-    [HttpPost]
+    [HttpPost("Criar")]
     [SwaggerOperation(Summary = "Cria um usuário.", Tags = new[] { "User" })]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
@@ -30,7 +31,8 @@ public class UserController : BaseController
         return CreatedResponse(string.Empty);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("Editar/{id}")]
+    [Authorize]
     [SwaggerOperation(Summary = "Edita um usuário.", Tags = new[] { "User" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
@@ -43,7 +45,8 @@ public class UserController : BaseController
         return NoContentResponse();
     }
     
-    [HttpDelete("{id}")]
+    [HttpDelete("Remover/{id}")]
+    [Authorize]
     [SwaggerOperation(Summary = "Remove um usuário.", Tags = new[] { "User" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
@@ -56,7 +59,8 @@ public class UserController : BaseController
         return NoContentResponse();
     }
     
-    [HttpGet("{id}")]
+    [HttpGet("ObterPorId/{id}")]
+    [Authorize]
     [SwaggerOperation(Summary = "Obtêm um usuário por id.", Tags = new[] { "User" })]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
@@ -69,7 +73,8 @@ public class UserController : BaseController
         return OkResponse(user);
     }
     
-    [HttpGet]
+    [HttpGet("Pesquisar")]
+    [Authorize]
     [SwaggerOperation(Summary = "Pesquisa um ou mais usuários.", Tags = new[] { "User" })]
     [ProducesResponseType(typeof(PagedDto<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]

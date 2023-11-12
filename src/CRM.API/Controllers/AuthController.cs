@@ -18,7 +18,7 @@ public class AuthController : BaseController
 
     private readonly IAuthService _authService;
     
-    [HttpPost]
+    [HttpPost("Login")]
     [SwaggerOperation(Summary = "Logar", Tags = new[] { "Auth" })]
     [ProducesResponseType(typeof(AuthUserDto), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
