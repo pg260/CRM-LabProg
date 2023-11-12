@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRM.Infra.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20231026183112_Initial")]
+    [Migration("20231112175302_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -238,6 +238,9 @@ namespace CRM.Infra.Migrations
 
                     b.Property<DateTime>("CriadoEm")
                         .HasColumnType("datetime");
+
+                    b.Property<bool>("Desativado")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Email")
                         .IsRequired()

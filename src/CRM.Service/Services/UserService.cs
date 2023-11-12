@@ -50,7 +50,13 @@ public class UserService : BaseService, IUserService
             return;
         }
 
-        Mapper.Map(dto, userExistente);
+        if (userExistente.Desativado)
+        {
+            Notificator.Handle("Esse usuário está desativado.");
+            return;
+        }
+
+            Mapper.Map(dto, userExistente);
         userExistente.AtualizadoEm = DateTime.Now;
         if (!await Validar(userExistente)) return;
 
@@ -60,7 +66,7 @@ public class UserService : BaseService, IUserService
             Notificator.Handle("Não foi possível salvar as alterações de usuário no banco de dados.");
     }
 
-    public async Task Remover(int id)
+    public async Task Desativar(int id)
     {
         var user = await _userRepository.FirstOrDefault(c => c.Id == id);
         if (user == null)
@@ -69,7 +75,36 @@ public class UserService : BaseService, IUserService
             return;
         }
 
-        _userRepository.Remover(user);
+        if (user.Desativado)
+        {
+            Notificator.Handle("Esse usuário já está desativado.");
+            return;
+        } 
+
+        user.Desativado = true;
+        _userRepository.Editar(user);
+
+        if (!await CommitChanges())
+            Notificator.Handle("Não foi possível salvar as alterações de usuário no banco de dados.");
+    }
+    
+    public async Task Ativar(int id)
+    {
+        var user = await _userRepository.FirstOrDefault(c => c.Id == id);
+        if (user == null)
+        {
+            Notificator.HandleNotFound();
+            return;
+        }
+
+        if (!user.Desativado)
+        {
+            Notificator.Handle("Esse usuário já está ativo.");
+            return;
+        } 
+
+        user.Desativado = false;
+        _userRepository.Editar(user);
 
         if (!await CommitChanges())
             Notificator.Handle("Não foi possível salvar as alterações de usuário no banco de dados.");

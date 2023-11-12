@@ -7,11 +7,13 @@ public class SearchUserDto : PaginatedSearchDto<User>
 {
     public string? Nome { get; set; }
     public string? Email { get; set; }
+    public bool? Desativado { get; set; }
     
     public override void ApplyFilters(ref IQueryable<User> query)
     {
         if (Nome != null) query = query.Where(c => c.Nome.Contains(Nome));
         if (Email != null) query = query.Where(c => c.Email.Contains(Email));
+        if (Desativado != null) query = query.Where(c => c.Desativado == Desativado);
     }
 
     public override void ApplyOrdenation(ref IQueryable<User> query)
@@ -22,7 +24,7 @@ public class SearchUserDto : PaginatedSearchDto<User>
             {
                 "nome" => query.OrderByDescending(c => c.Nome),
                 "email" => query.OrderByDescending(c => c.Email),
-                _ => query.OrderByDescending(c => c.Id)
+                _ => query.OrderByDescending(c => c.CriadoEm)
             };
             return;
         }
@@ -31,7 +33,7 @@ public class SearchUserDto : PaginatedSearchDto<User>
         {
             "nome" => query.OrderBy(c => c.Nome),
             "email" => query.OrderBy(c => c.Email),
-            _ => query.OrderBy(c => c.Id)
+            _ => query.OrderBy(c => c.CriadoEm)
         };
     }
 }
