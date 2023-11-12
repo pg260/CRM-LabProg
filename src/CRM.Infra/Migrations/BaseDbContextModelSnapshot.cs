@@ -236,6 +236,9 @@ namespace CRM.Infra.Migrations
                     b.Property<DateTime>("CriadoEm")
                         .HasColumnType("datetime");
 
+                    b.Property<bool>("Desativado")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("longtext");

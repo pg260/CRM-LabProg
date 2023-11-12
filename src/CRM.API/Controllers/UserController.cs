@@ -45,17 +45,17 @@ public class UserController : BaseController
         return NoContentResponse();
     }
     
-    [HttpDelete("Remover/{id}")]
+    [HttpDelete("Desativar/{id}")]
     [Authorize]
-    [SwaggerOperation(Summary = "Remove um usuário.", Tags = new[] { "User" })]
+    [SwaggerOperation(Summary = "Desativa um usuário.", Tags = new[] { "User" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Editar(int id)
+    public async Task<IActionResult> Desativar(int id)
     {
-        await _userService.Remover(id);
+        await _userService.Desativar(id);
         return NoContentResponse();
     }
     

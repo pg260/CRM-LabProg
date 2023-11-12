@@ -22,6 +22,9 @@ public class UserMapping : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(25);
 
+        builder.Property(c => c.Desativado)
+            .IsRequired();
+
         builder.Property(c => c.Foto);
 
         builder.Property(c => c.CriadoEm)
@@ -30,7 +33,7 @@ public class UserMapping : IEntityTypeConfiguration<User>
 
         builder.Property(c => c.AtualizadoEm)
             .IsRequired()
-            .HasColumnType("datetime");;
+            .HasColumnType("datetime");
 
         builder.HasMany(c => c.HistoricoCompras)
             .WithOne(h => h.User)
