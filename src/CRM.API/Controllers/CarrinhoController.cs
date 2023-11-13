@@ -2,12 +2,13 @@
 using CRM.Service.Contracts;
 using CRM.Service.Dtos.ProdutoCarrinhoDtos;
 using CRM.Service.NotificatorConfig;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace CRM.API.Controllers;
 
-[Microsoft.AspNetCore.Components.Route("v1/Carrinho")]
+[Route("v1/Carrinho")]
 public class CarrinhoController : BaseController
 {
     public CarrinhoController(INotificator notificator, ICarrinhoService carrinhoService) : base(notificator)
@@ -17,7 +18,8 @@ public class CarrinhoController : BaseController
 
     private readonly ICarrinhoService _carrinhoService;
     
-    [HttpPut("{id}")]
+    [HttpPut("AdicionarProduto/{id}")]
+    [Authorize]
     [SwaggerOperation(Summary = "Adiciona um produto.", Tags = new[] { "Carrinho" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
@@ -30,7 +32,8 @@ public class CarrinhoController : BaseController
         return NoContentResponse();
     }
     
-    [HttpDelete("{id}")]
+    [HttpDelete("RemoverProduto/{id}")]
+    [Authorize]
     [SwaggerOperation(Summary = "Remove um produto.", Tags = new[] { "Carrinho" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
