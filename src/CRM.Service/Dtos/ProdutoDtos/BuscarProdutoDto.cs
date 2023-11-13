@@ -5,16 +5,20 @@ namespace CRM.Service.Dtos.ProdutoDtos
 {
     public class BuscarProdutoDto : PaginatedSearchDto<Produto>
     {
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public string? Nome { get; set; }
         public float? Valor { get; set; }
         public string? Descricao { get; set; }
         public string? Cidade { get; set; }
         public string? Estado { get; set; }
+        public DateTime? DataInicio { get; set; }
+        public DateTime? DataFim { get; set; }
+        public bool? Desativado { get; set; }
         
         public override void ApplyFilters(ref IQueryable<Produto> query)
         {
-            query = query.Where(p => p.UserId == UserId);
+            if(UserId != null)
+                query = query.Where(p => p.UserId == UserId);
             if (Nome != null) 
                 query = query.Where(p => p.Nome.ToLower().Contains(Nome.Trim().ToLower()));
             if (Valor > 0) 
@@ -25,6 +29,12 @@ namespace CRM.Service.Dtos.ProdutoDtos
                 query = query.Where(p => p.Cidade.ToLower().Contains(Cidade.Trim().ToLower()));
             if (Estado != null)
                 query = query.Where(p => p.Estado.ToLower().Contains(Estado.Trim().ToLower()));
+            if (DataInicio.HasValue)
+                query = query.Where(p => p.CriadoEm >= DataInicio.Value);
+            if (DataFim.HasValue)
+                query = query.Where(p => p.CriadoEm <= DataFim.Value);
+            if(Desativado != null)
+                query = query.Where(p => p.Desativado == Desativado);
         }
         
         public override void ApplyOrdenation(ref IQueryable<Produto> query)
@@ -38,7 +48,7 @@ namespace CRM.Service.Dtos.ProdutoDtos
                     "descricao" => query.OrderByDescending(p => p.Descricao),
                     "cidade" => query.OrderByDescending(p => p.Cidade),
                     "estado" => query.OrderByDescending(p => p.Estado),
-                    _ => query.OrderByDescending(p => p.Id)
+                    _ => query.OrderByDescending(p => p.CriadoEm)
                 };
             }
 
@@ -49,7 +59,7 @@ namespace CRM.Service.Dtos.ProdutoDtos
                 "descricao" => query.OrderBy(p => p.Descricao),
                 "cidade" => query.OrderBy(p => p.Cidade),
                 "estado" => query.OrderBy(p => p.Estado),
-                _ => query.OrderBy(p => p.Id)
+                _ => query.OrderBy(p => p.CriadoEm)
             };
         }
     }

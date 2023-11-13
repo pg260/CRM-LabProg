@@ -1,13 +1,15 @@
 using CRM.API.Responses;
 using CRM.Service.Contracts;
+using CRM.Service.Dtos.PaginatedSearch;
 using CRM.Service.Dtos.ProdutoDtos;
 using CRM.Service.NotificatorConfig;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace CRM.API.Controllers
 {
-    [Microsoft.AspNetCore.Components.Route("v1/Produto")]
+    [Route("v1/Produto")]
     public class ProdutoController : BaseController
     {
         private readonly IProdutoService _produtoService;
@@ -18,17 +20,18 @@ namespace CRM.API.Controllers
 
         [HttpPost("criar")]
         [SwaggerOperation(Summary = "Cadastrar um Produto.", Tags = new[] { "Produto" })]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Criar([FromBody] AddProdutoDto dto)
         {
-            var produto = await _produtoService.Criar(dto);
-            return CreatedResponse(string.Empty, produto);
+            await _produtoService.Criar(dto);
+            return CreatedResponse(string.Empty);
         }
 
         [HttpPut("editar/{id}")]
+        [Authorize]
         [SwaggerOperation(Summary = "Editar um Produto.", Tags = new[] { "Produto" })]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
@@ -37,13 +40,14 @@ namespace CRM.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Editar(int id, [FromBody] ProdutoDto dto)
         {
-            var produto = await _produtoService.Editar(id, dto);
-            return OkResponse(produto);
+            await _produtoService.Editar(id, dto);
+            return NoContentResponse();
         }
 
         [HttpPatch("ativar/{id}")]
+        [Authorize]
         [SwaggerOperation(Summary = "Ativar um Produto.", Tags = new[] { "Produto" })]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProdutoDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -55,8 +59,9 @@ namespace CRM.API.Controllers
         }
         
         [HttpPatch("desativar/{id}")]
+        [Authorize]
         [SwaggerOperation(Summary = "Desativar um Produto.", Tags = new[] { "Produto" })]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProdutoDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -68,6 +73,7 @@ namespace CRM.API.Controllers
         }
 
         [HttpGet("obter/{id}")]
+        [Authorize]
         [SwaggerOperation(Summary = "Obter um Produto por id.", Tags = new[] { "Produto" })]
         [ProducesResponseType(typeof(ProdutoDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
@@ -81,8 +87,9 @@ namespace CRM.API.Controllers
         }
 
         [HttpGet("obter")]
+        [Authorize]
         [SwaggerOperation(Summary = "Pesquisar um ou mais Produtos.", Tags = new[] { "Produto" })]
-        [ProducesResponseType(typeof(ProdutoDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedDto<ProdutoDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]

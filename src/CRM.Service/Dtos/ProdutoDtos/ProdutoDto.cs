@@ -9,4 +9,5 @@ public class ProdutoDto
     public string Cidade { get; set; } = null!;
     public string Estado { get; set; } = null!;
     public bool Desativado { get; set; }
+    public DateTime CriadoEm { get; set; }
 }
