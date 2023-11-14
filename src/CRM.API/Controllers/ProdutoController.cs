@@ -38,7 +38,7 @@ namespace CRM.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Editar(int id, [FromBody] ProdutoDto dto)
+        public async Task<IActionResult> Editar(int id, [FromBody] EditarProdutoDto dto)
         {
             await _produtoService.Editar(id, dto);
             return NoContentResponse();

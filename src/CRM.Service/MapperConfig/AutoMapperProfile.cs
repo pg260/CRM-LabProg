@@ -24,6 +24,7 @@ public class AutoMapperProfile : Profile
 
         CreateMap<Produto, AddProdutoDto>().ReverseMap();
         CreateMap<Produto, ProdutoDto>().ReverseMap();
+        CreateMap<Produto, EditarProdutoDto>().ReverseMap();
         CreateMap<PaginatedResult<Produto>, PagedDto<ProdutoDto>>().ReverseMap();
         
         #endregion

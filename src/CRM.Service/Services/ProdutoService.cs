@@ -37,7 +37,7 @@ namespace CRM.Service.Services
             return null;
         }
 
-        public async Task Editar(int id, ProdutoDto dto)
+        public async Task Editar(int id, EditarProdutoDto dto)
         {
             if (id != dto.Id)
             {
@@ -45,7 +45,6 @@ namespace CRM.Service.Services
                 return;
             }
             
-            dto.CriadoEm = DateTime.Now;
             var produto = await _produtoRepository.FirstOrDefault(p => p.Id == dto.Id);
             if(produto == null || produto.UserId != _authenticatedUser.Id)
             {
@@ -68,7 +67,7 @@ namespace CRM.Service.Services
             _produtoRepository.Editar(produto);
             if (await CommitChanges())
             {
-                Mapper.Map<ProdutoDto>(produto);
+                return;
             }
 
             Notificator.Handle("Não foi possível editar o Produto.");

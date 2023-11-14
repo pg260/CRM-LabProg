@@ -6,7 +6,7 @@ namespace CRM.Service.Contracts
     public interface IProdutoService
     {
         Task<ProdutoDto?> Criar(AddProdutoDto dto);
-        Task Editar(int id, ProdutoDto dto);
+        Task Editar(int id, EditarProdutoDto dto);
         Task Ativar(int id);
         Task Desativar(int id);
         Task<ProdutoDto?> ObterPorId(int id);
