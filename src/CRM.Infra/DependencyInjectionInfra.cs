@@ -34,6 +34,8 @@ public static class DependencyInjectionInfra
     {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IProdutoRepository, ProdutoRepository>();
+        services.AddScoped<ICarrinhoRepository, CarrinhoRepository>();
+        services.AddScoped<IProdutoCarrinhoRepository, ProdutoCarrinhoRepository>();
     }
 
     public static void UseMigrations(IServiceProvider services)

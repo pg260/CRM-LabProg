@@ -47,7 +47,7 @@ namespace CRM.API.Controllers
         [HttpPatch("ativar/{id}")]
         [Authorize]
         [SwaggerOperation(Summary = "Ativar um Produto.", Tags = new[] { "Produto" })]
-        [ProducesResponseType(typeof(ProdutoDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -55,13 +55,13 @@ namespace CRM.API.Controllers
         public async Task<IActionResult> Ativar(int id)
         {
             await _produtoService.Ativar(id);
-            return OkResponse();
+            return NoContentResponse();
         }
         
         [HttpPatch("desativar/{id}")]
         [Authorize]
         [SwaggerOperation(Summary = "Desativar um Produto.", Tags = new[] { "Produto" })]
-        [ProducesResponseType(typeof(ProdutoDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -69,7 +69,7 @@ namespace CRM.API.Controllers
         public async Task<IActionResult> Desativar(int id)
         {
             await _produtoService.Desativar(id);
-            return OkResponse();
+            return NoContentResponse();
         }
 
         [HttpGet("obter/{id}")]

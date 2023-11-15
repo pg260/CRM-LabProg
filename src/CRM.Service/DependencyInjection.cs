@@ -28,6 +28,7 @@ public static class DependencyInjection
         services.AddScoped<IProdutoService, ProdutoService>();
         services.AddScoped<IHashService, HashService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<ICarrinhoService, CarrinhoService>();
     }
 
     public static void CreateAutomapper(this IServiceCollection services)

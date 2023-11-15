@@ -9,67 +9,116 @@ using CRM.Service.NotificatorConfig;
 
 namespace CRM.Service.Services;
 
-public class CarrinhoService : BaseService, ICarrinhoService 
+public class CarrinhoService : BaseService, ICarrinhoService
 {
-    public CarrinhoService(IMapper mapper, INotificator notificator, ICarrinhoRepository carrinhoRepository, IAuthenticatedUser authenticatedUser, IProdutoRepository produtoRepository) : base(mapper, notificator)
+    public CarrinhoService(IMapper mapper, INotificator notificator, ICarrinhoRepository carrinhoRepository,
+        IAuthenticatedUser authenticatedUser, IProdutoRepository produtoRepository, IProdutoCarrinhoRepository produtoCarrinhoRepository) : base(mapper, notificator)
     {
         _carrinhoRepository = carrinhoRepository;
         _authenticatedUser = authenticatedUser;
         _produtoRepository = produtoRepository;
+        _produtoCarrinhoRepository = produtoCarrinhoRepository;
     }
 
     private readonly ICarrinhoRepository _carrinhoRepository;
     private readonly IAuthenticatedUser _authenticatedUser;
     private readonly IProdutoRepository _produtoRepository;
+    private readonly IProdutoCarrinhoRepository _produtoCarrinhoRepository;
 
     public async Task<CarrinhoDto?> ObterPorId(int id)
     {
+        if (!await AtualizandoCarrinho(id)) return null;
+
         var carrinho = await _carrinhoRepository.ObterPorId(id);
         if (carrinho != null) return Mapper.Map<CarrinhoDto>(carrinho);
-        
+
         Notificator.HandleNotFound();
         return null;
     }
 
     public async Task AdicionarProduto(int carrinhoId, AlterarProdutoCarrinhoDto dto)
     {
-        if(!await Validar(carrinhoId, dto)) return;
+        if (!Validar(carrinhoId, dto)) return;
 
-        var carrinho = await _carrinhoRepository.FirstOrDefault(c => c.Id == carrinhoId);
-        var contagemProdutos = 0;
-        foreach (var produtos in carrinho!.ProdutoCarrinhos.Where(produtos => produtos.ProdutoId == dto.ProdutoId))
+        var carrinho = await _carrinhoRepository.ObterPorId(carrinhoId);
+        if (carrinho == null)
         {
-            carrinho.ProdutoCarrinhos.Remove(produtos);
-            contagemProdutos++;
+            Notificator.HandleNotFound();
+            return;
         }
-        
-        var produtoCarrinho = Mapper.Map<ProdutoCarrinho>(dto);
-        carrinho.ProdutoCarrinhos.Add(produtoCarrinho);
-        carrinho.ValorTotal += (dto.Quantidade + contagemProdutos) * dto.ValorProduto;
 
+        var produto = await _produtoRepository.FirstOrDefault(c => c.Id == dto.ProdutoId && !c.Desativado);
+        if (produto == null)
+        {
+            Notificator.HandleNotFound();
+            return;
+        }
+
+        var contagemProdutos = dto.Quantidade;
+        
+        var produtoExistente = carrinho.ProdutoCarrinhos.Find(c => c.ProdutoId == dto.ProdutoId);
+        if (produtoExistente != null)
+        {
+            produtoExistente.Quantidade += dto.Quantidade;
+            produtoExistente.ValorTotal += dto.Quantidade * produto.Valor;
+            
+            _produtoCarrinhoRepository.Editar(produtoExistente);
+            if (!await CommitProdutoCarrinho()) Notificator.Handle("Não foi possível adicionar esse item ao carrinho.");
+            return;
+        }
+
+        var produtoCarrinho = Mapper.Map<ProdutoCarrinho>(dto);
+        produtoCarrinho.ValorTotal = dto.Quantidade * produto.Valor;
+        
+        for (var i = 0; i < contagemProdutos; i++) carrinho.ProdutoCarrinhos.Add(produtoCarrinho);
+        carrinho.ValorTotal += produtoCarrinho.ValorTotal;
+
+        _carrinhoRepository.Editar(carrinho);
         if (!await Commit()) Notificator.Handle("Não foi possível adicionar esse item ao carrinho.");
     }
 
-    public async Task RemoverProduto(int carrinhoId,  AlterarProdutoCarrinhoDto dto)
+    public async Task RemoverProduto(int carrinhoId, AlterarProdutoCarrinhoDto dto)
     {
-        if(!await Validar(carrinhoId, dto)) return;
-        
-        var carrinho = await _carrinhoRepository.FirstOrDefault(c => c.Id == carrinhoId);
-        var contagemProdutos = dto.Quantidade;
-        foreach (var produtos in carrinho!.ProdutoCarrinhos.Where(produtos => produtos.ProdutoId == dto.ProdutoId))
+        if (!Validar(carrinhoId, dto)) return;
+
+        var carrinho = await _carrinhoRepository.ObterPorId(carrinhoId);
+        if (carrinho == null)
         {
-            carrinho.ProdutoCarrinhos.Remove(produtos);
-            contagemProdutos--;
-            if(contagemProdutos == 0) break;
+            Notificator.HandleNotFound();
+            return;
+        }
+        
+        var produto = await _produtoRepository.FirstOrDefault(c => c.Id == dto.ProdutoId && !c.Desativado);
+        if (produto == null)
+        {
+            Notificator.HandleNotFound();
+            return;
         }
 
-        carrinho.ValorTotal -= dto.Quantidade * dto.ValorProduto;
-        if (!await Commit()) Notificator.Handle("Não foi possível adicionar esse item ao carrinho.");
+        var produtoExistente = carrinho.ProdutoCarrinhos.Find(c => c.ProdutoId == dto.ProdutoId);
+        if (produtoExistente != null)
+        {
+            produtoExistente.Quantidade -= dto.Quantidade;
+            if (produtoExistente.Quantidade <= 0)
+            {
+                _produtoCarrinhoRepository.Remover(produtoExistente);
+            }
+            else
+            {
+                produtoExistente.ValorTotal -= dto.Quantidade * produto.Valor;
+                _produtoCarrinhoRepository.Editar(produtoExistente);
+            }
+            
+            if (!await CommitProdutoCarrinho()) Notificator.Handle("Não foi possível remover esse item ao carrinho.");
+            return;
+        }
+        
+        Notificator.Handle("Esse produto não está mais o seu carrinho.");
     }
 
     private async Task<bool> Commit() => await _carrinhoRepository.UnitOfWork.Commit();
-
-    private async Task<bool> Validar(int carrinhoId, AlterarProdutoCarrinhoDto dto)
+    private async Task<bool> CommitProdutoCarrinho() => await _produtoCarrinhoRepository.UnitOfWork.Commit();
+    private bool Validar(int carrinhoId, AlterarProdutoCarrinhoDto dto)
     {
         if (carrinhoId != dto.CarrinhoId)
         {
@@ -79,20 +128,47 @@ public class CarrinhoService : BaseService, ICarrinhoService
 
         if (_authenticatedUser.Id == carrinhoId) return true;
         
-        var produto = await _produtoRepository.FirstOrDefault(c => c.Id == dto.ProdutoId);
-        if (produto == null)
+        Notificator.Handle("Você não pode adicionar produtos no carrinho de outra pessoa.");
+        return false;
+    }
+
+    private async Task<bool> AtualizandoCarrinho(int id)
+    {
+        var carrinho = await _carrinhoRepository.ObterPorId(id);
+        if (carrinho == null)
         {
-            Notificator.Handle("Não existe um produto com esse id.");
+            Notificator.HandleNotFound();
             return false;
         }
 
-        if (Math.Abs(produto.Valor - dto.ValorProduto) > 0.00001)
+        if (carrinho.ProdutoCarrinhos.Count == 0)
         {
-            Notificator.Handle("Os valor do produto está incorreto, atualize a pagina e tente novamente.");
-            return false;
+            if (carrinho.ValorTotal != 0)
+            {
+                carrinho.ValorTotal = 0;
+                _carrinhoRepository.Editar(carrinho);
+
+                if (!await Commit())
+                {
+                    Notificator.Handle("Não foi possível atualizar o carrinho.");
+                    return false;
+                }
+            }
+            
+            return true;
         }
-        
-        Notificator.Handle("Você não pode adicionar produtos no carrinho de outra pessoa.");
-        return false;
+
+        foreach (var produto in carrinho.ProdutoCarrinhos.Where(produto => produto.Produto.Desativado))
+        {
+            carrinho.ValorTotal -= produto.Produto.Valor;
+            carrinho.ProdutoCarrinhos.Remove(produto);
+        }
+
+        var total = carrinho.ProdutoCarrinhos.Sum(produto => produto.ValorTotal);
+        if (Math.Abs(total - carrinho.ValorTotal) > 0) carrinho.ValorTotal = total;
+
+        _carrinhoRepository.Editar(carrinho);
+        if (!await Commit()) Notificator.Handle("Não foi possível abrir o carrinho.");
+        return true;
     }
 }

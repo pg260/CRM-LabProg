@@ -39,13 +39,13 @@ public class UserMapping : IEntityTypeConfiguration<User>
             .WithOne(h => h.User)
             .HasForeignKey(h => h.UserId)
             .HasPrincipalKey(c => c.Id)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(c => c.Compras)
             .WithOne(h => h.User)
             .HasForeignKey(h => h.UserId)
             .HasPrincipalKey(c => c.Id)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
         
         builder.HasMany(c => c.Feedbacks)
             .WithOne(h => h.User)

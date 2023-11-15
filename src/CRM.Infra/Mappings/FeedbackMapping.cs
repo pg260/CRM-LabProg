@@ -27,10 +27,10 @@ public class FeedbackMapping : IEntityTypeConfiguration<Feedback>
         
         builder.Property(c => c.CriadoEm)
             .IsRequired()
-            .HasColumnType("datetime");;
+            .HasColumnType("datetime");
         
         builder.Property(c => c.AtualizadoEm)
             .IsRequired()
-            .HasColumnType("datetime");;
+            .HasColumnType("datetime");
     }
 }
