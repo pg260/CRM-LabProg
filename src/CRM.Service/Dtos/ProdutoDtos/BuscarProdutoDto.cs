@@ -22,7 +22,7 @@ namespace CRM.Service.Dtos.ProdutoDtos
             if (Nome != null) 
                 query = query.Where(p => p.Nome.ToLower().Contains(Nome.Trim().ToLower()));
             if (Valor > 0) 
-                query = query.Where(p => p.Valor > Valor);
+                query = query.Where(p => p.Valor >= Valor);
             if (Descricao != null) 
                 query = query.Where(p => p.Descricao.ToLower().Contains(Descricao.Trim().ToLower()));
             if (Cidade != null)
