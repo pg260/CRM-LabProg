@@ -103,6 +103,7 @@ namespace CRM.Infra.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Estado = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    Desativado = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     CriadoEm = table.Column<DateTime>(type: "datetime", nullable: false),
                     AtualizadoEm = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
@@ -168,6 +169,7 @@ namespace CRM.Infra.Migrations
                     ProdutoId = table.Column<int>(type: "int", nullable: false),
                     CarrinhoId = table.Column<int>(type: "int", nullable: false),
                     Quantidade = table.Column<int>(type: "int", nullable: false),
+                    ValorTotal = table.Column<float>(type: "float", nullable: false),
                     CriadoEm = table.Column<DateTime>(type: "datetime", nullable: false),
                     AtualizadoEm = table.Column<DateTime>(type: "datetime", nullable: false)
                 },

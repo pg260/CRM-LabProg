@@ -34,11 +34,14 @@ public class ProdutoMapping : IEntityTypeConfiguration<Produto>
         
         builder.Property(c => c.CriadoEm)
             .IsRequired()
-            .HasColumnType("datetime");;
+            .HasColumnType("datetime");
         
         builder.Property(c => c.AtualizadoEm)
             .IsRequired()
-            .HasColumnType("datetime");;
+            .HasColumnType("datetime");
+
+        builder.Property(c => c.Desativado)
+            .IsRequired();
 
         builder.HasMany(p => p.ProdutoCarrinhos)
             .WithOne(c => c.Produto)

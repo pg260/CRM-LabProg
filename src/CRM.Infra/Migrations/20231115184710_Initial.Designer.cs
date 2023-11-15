@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRM.Infra.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20231112175302_Initial")]
+    [Migration("20231115184710_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -172,6 +172,9 @@ namespace CRM.Infra.Migrations
                     b.Property<DateTime>("CriadoEm")
                         .HasColumnType("datetime");
 
+                    b.Property<bool>("Desativado")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -217,6 +220,9 @@ namespace CRM.Infra.Migrations
 
                     b.Property<int>("Quantidade")
                         .HasColumnType("int");
+
+                    b.Property<float>("ValorTotal")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 

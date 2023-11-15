@@ -18,16 +18,16 @@ public class HistoricoComprasMapping : IEntityTypeConfiguration<HistoricoCompras
         
         builder.Property(c => c.CriadoEm)
             .IsRequired()
-            .HasColumnType("datetime");;
+            .HasColumnType("datetime");
         
         builder.Property(c => c.AtualizadoEm)
             .IsRequired()
-            .HasColumnType("datetime");;
+            .HasColumnType("datetime");
 
         builder.HasMany(c => c.Compras)
             .WithOne(r => r.HistoricoCompras)
             .HasForeignKey(r => r.HistoricoId)
             .HasPrincipalKey(c => c.Id)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

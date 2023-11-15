@@ -18,11 +18,11 @@ public class CarrinhoMapping : IEntityTypeConfiguration<Carrinho>
 
         builder.Property(c => c.CriadoEm)
             .IsRequired()
-            .HasColumnType("datetime");;
+            .HasColumnType("datetime");
         
         builder.Property(c => c.AtualizadoEm)
             .IsRequired()
-            .HasColumnType("datetime");;
+            .HasColumnType("datetime");
         
         builder.HasMany(c => c.ProdutoCarrinhos)
             .WithOne(r => r.Carrinho)

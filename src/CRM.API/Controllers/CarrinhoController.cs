@@ -1,5 +1,6 @@
 ﻿using CRM.API.Responses;
 using CRM.Service.Contracts;
+using CRM.Service.Dtos.CarrinhoDtos;
 using CRM.Service.Dtos.ProdutoCarrinhoDtos;
 using CRM.Service.NotificatorConfig;
 using Microsoft.AspNetCore.Authorization;
@@ -44,5 +45,19 @@ public class CarrinhoController : BaseController
     {
         await _carrinhoService.RemoverProduto(id, dto);
         return NoContentResponse();
+    }
+    
+    [HttpDelete("ObterPorId/{id}")]
+    [Authorize]
+    [SwaggerOperation(Summary = "Obtem um carrinho por id.", Tags = new[] { "Carrinho" })]
+    [ProducesResponseType(typeof(CarrinhoDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ObterPorId(int id)
+    {
+        var carrinho = await _carrinhoService.ObterPorId(id);
+        return OkResponse(carrinho);
     }
 }
