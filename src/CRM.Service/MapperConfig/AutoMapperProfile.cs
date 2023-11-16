@@ -2,6 +2,8 @@
 using CRM.Domain.Entities;
 using CRM.Domain.Pagination;
 using CRM.Service.Dtos.CarrinhoDtos;
+using CRM.Service.Dtos.ComprasDto;
+using CRM.Service.Dtos.HistoricoComprasDto;
 using CRM.Service.Dtos.PaginatedSearch;
 using CRM.Service.Dtos.ProdutoCarrinhoDtos;
 using CRM.Service.Dtos.ProdutoDtos;
@@ -38,5 +40,20 @@ public class AutoMapperProfile : Profile
         CreateMap<ProdutoCarrinho, ProdutoCarrinhoDto>().ReverseMap();
 
         #endregion
+
+        #region HistoricoCompras
+
+
+        CreateMap<HistoricoCompras, HistoricoComprasDto>()
+            .ForMember(dest => dest.Compras, opt => opt.MapFrom(src => src.Compras))
+            .ReverseMap();
+
+        #endregion
+
+        #region Compras
+
+        CreateMap<Compra, CompraDto>().ReverseMap();
+
+        #endregion"
     }
 }
