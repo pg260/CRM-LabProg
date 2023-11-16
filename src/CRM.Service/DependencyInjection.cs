@@ -29,7 +29,6 @@ public static class DependencyInjection
         services.AddScoped<IHashService, HashService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ICarrinhoService, CarrinhoService>();
-        services.AddScoped<ICompraService, CompraService>();
         services.AddScoped<IHistoricoComprasService, HistoricoComprasService>();
     }
 
