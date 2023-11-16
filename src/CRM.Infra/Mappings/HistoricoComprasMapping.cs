@@ -13,7 +13,10 @@ public class HistoricoComprasMapping : IEntityTypeConfiguration<HistoricoCompras
         builder.Property(c => c.UserId)
             .IsRequired();
         
-        builder.Property(c => c.ValorHistorico)
+        builder.Property(c => c.ValorTotal)
+            .IsRequired();
+
+        builder.Property(c => c.MetodoDePagameto)
             .IsRequired();
         
         builder.Property(c => c.CriadoEm)
