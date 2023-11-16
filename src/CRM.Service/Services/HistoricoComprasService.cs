@@ -4,6 +4,7 @@ using CRM.Domain.Contracts.Repositories;
 using CRM.Domain.Entities;
 using CRM.Service.Contracts;
 using CRM.Service.Dtos.HistoricoComprasDto;
+using CRM.Service.Dtos.PaginatedSearch;
 using CRM.Service.NotificatorConfig;
 using FluentValidation.Results;
 
@@ -11,16 +12,18 @@ namespace CRM.Service.Services;
 
 public class HistoricoComprasService : BaseService, IHistoricoComprasService
 {
-    public HistoricoComprasService(IMapper mapper, INotificator notificator, IHistoricoComprasRepository historicoComprasRepository, IAuthenticatedUser authenticatedUser, ICarrinhoRepository carrinhoRepository) : base(mapper, notificator)
+    public HistoricoComprasService(IMapper mapper, INotificator notificator, IHistoricoComprasRepository historicoComprasRepository, IAuthenticatedUser authenticatedUser, ICarrinhoRepository carrinhoRepository, ICarrinhoService carrinhoService) : base(mapper, notificator)
     {
         _historicoComprasRepository = historicoComprasRepository;
         _authenticatedUser = authenticatedUser;
         _carrinhoRepository = carrinhoRepository;
+        _carrinhoService = carrinhoService;
     }
 
     private readonly IHistoricoComprasRepository _historicoComprasRepository; 
     private readonly ICarrinhoRepository _carrinhoRepository;
     private readonly IAuthenticatedUser _authenticatedUser;
+    private readonly ICarrinhoService _carrinhoService;
 
     public async Task Comprando(ComprandoDto dto)
     {
@@ -49,7 +52,7 @@ public class HistoricoComprasService : BaseService, IHistoricoComprasService
             var compra = new Compra
             {
                 UserId = _authenticatedUser.Id,
-                HistoricoId = historico.Id,
+                HistoricoComprasId = historico.Id,
                 ProdutoId = produtoCarrinho.ProdutoId,
                 Quantidade = produtoCarrinho.Quantidade,
                 ValorTotal = produtoCarrinho.ValorTotal
@@ -63,6 +66,8 @@ public class HistoricoComprasService : BaseService, IHistoricoComprasService
         
         _historicoComprasRepository.Comprando(historico);
         if(!await Commit()) Notificator.Handle("Não foi possível salvar no histórico de compras.");
+
+        await _carrinhoService.EsvaziandoCarrinho(carrinho.Id);
     }
 
     public async Task<HistoricoComprasDto?> ObterPorId(int id)
@@ -72,6 +77,12 @@ public class HistoricoComprasService : BaseService, IHistoricoComprasService
         
         Notificator.HandleNotFound();
         return null;
+    }
+
+    public async Task<PagedDto<HistoricoComprasDto>> Buscar(BuscarHistoricoComprasDto dto)
+    {
+        var busca = await _historicoComprasRepository.Search(dto);
+        return Mapper.Map<PagedDto<HistoricoComprasDto>>(busca);
     }
 
     private async Task<bool> Commit() => await _historicoComprasRepository.UnitOfWork.Commit();

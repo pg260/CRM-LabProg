@@ -8,4 +8,5 @@ public interface ICarrinhoService
     Task<CarrinhoDto?> ObterPorId(int id);
     Task AdicionarProduto(int carrinhoId, AlterarProdutoCarrinhoDto dto);
     Task RemoverProduto(int carrinhoId, AlterarProdutoCarrinhoDto dto);
+    Task EsvaziandoCarrinho(int carrinhoId);
 }

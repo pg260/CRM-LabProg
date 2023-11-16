@@ -116,6 +116,23 @@ public class CarrinhoService : BaseService, ICarrinhoService
         Notificator.Handle("Esse produto não está mais o seu carrinho.");
     }
 
+    public async Task EsvaziandoCarrinho(int carrinhoId)
+    {
+        var carrinho = await _carrinhoRepository.ObterPorId(carrinhoId);
+        if (carrinho == null)
+        {
+            Notificator.HandleNotFound();
+            return;
+        }
+
+        foreach (var produtoCarrinho in carrinho.ProdutoCarrinhos)
+        {
+            _produtoCarrinhoRepository.Remover(produtoCarrinho);   
+        }
+        
+        if(!await CommitProdutoCarrinho()) Notificator.Handle("Não foi possível esvaziar o seu carrinho.");
+    }
+
     private async Task<bool> Commit() => await _carrinhoRepository.UnitOfWork.Commit();
     private async Task<bool> CommitProdutoCarrinho() => await _produtoCarrinhoRepository.UnitOfWork.Commit();
     private bool Validar(int carrinhoId, AlterarProdutoCarrinhoDto dto)

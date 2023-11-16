@@ -2,7 +2,7 @@ namespace CRM.Domain.Entities;
 
 public class Compra : BaseEntity
 {
-    public int HistoricoId { get; set; }
+    public int HistoricoComprasId { get; set; }
     public int UserId { get; set; }
     public int ProdutoId { get; set; }
     public int Quantidade { get; set; }

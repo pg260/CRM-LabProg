@@ -29,7 +29,7 @@ public class HistoricoComprasMapping : IEntityTypeConfiguration<HistoricoCompras
 
         builder.HasMany(c => c.Compras)
             .WithOne(r => r.HistoricoCompras)
-            .HasForeignKey(r => r.HistoricoId)
+            .HasForeignKey(r => r.HistoricoCompras)
             .HasPrincipalKey(c => c.Id)
             .OnDelete(DeleteBehavior.Restrict);
     }
