@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRM.Infra.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20231115224510_Compras")]
-    partial class Compras
+    [Migration("20231116005407_ComprasRealizadas")]
+    partial class ComprasRealizadas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,9 +65,6 @@ namespace CRM.Infra.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<int>("HistoricoComprasId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("HistoricoId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProdutoId")

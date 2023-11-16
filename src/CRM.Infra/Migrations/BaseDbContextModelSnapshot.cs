@@ -64,9 +64,6 @@ namespace CRM.Infra.Migrations
                     b.Property<int>("HistoricoComprasId")
                         .HasColumnType("int");
 
-                    b.Property<int>("HistoricoId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ProdutoId")
                         .HasColumnType("int");
 

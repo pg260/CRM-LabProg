@@ -10,7 +10,7 @@ public class CompraMapping : IEntityTypeConfiguration<Compra>
     {
         builder.HasKey(c => c.Id);
 
-        builder.Property(c => c.HistoricoId)
+        builder.Property(c => c.HistoricoComprasId)
             .IsRequired();
         
         builder.Property(c => c.UserId)

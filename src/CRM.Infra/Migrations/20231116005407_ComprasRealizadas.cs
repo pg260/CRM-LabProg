@@ -5,11 +5,15 @@
 namespace CRM.Infra.Migrations
 {
     /// <inheritdoc />
-    public partial class Compras : Migration
+    public partial class ComprasRealizadas : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "HistoricoId",
+                table: "Compras");
+
             migrationBuilder.RenameColumn(
                 name: "ValorHistorico",
                 table: "HistoricoCompras",
@@ -35,6 +39,13 @@ namespace CRM.Infra.Migrations
                 name: "ValorTotal",
                 table: "HistoricoCompras",
                 newName: "ValorHistorico");
+
+            migrationBuilder.AddColumn<int>(
+                name: "HistoricoId",
+                table: "Compras",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
         }
     }
 }

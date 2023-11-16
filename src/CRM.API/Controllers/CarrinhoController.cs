@@ -47,7 +47,21 @@ public class CarrinhoController : BaseController
         return NoContentResponse();
     }
     
-    [HttpDelete("ObterPorId/{id}")]
+    [HttpDelete("EsvaziandoCarrinho/{id}")]
+    [Authorize]
+    [SwaggerOperation(Summary = "Esvazia o carrinho.", Tags = new[] { "Carrinho" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> EsvaziandoCarrinho(int id)
+    {
+        await _carrinhoService.EsvaziandoCarrinho(id);
+        return NoContentResponse();
+    }
+    
+    [HttpGet("ObterPorId/{id}")]
     [Authorize]
     [SwaggerOperation(Summary = "Obtem um carrinho por id.", Tags = new[] { "Carrinho" })]
     [ProducesResponseType(typeof(CarrinhoDto), StatusCodes.Status200OK)]

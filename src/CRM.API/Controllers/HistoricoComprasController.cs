@@ -45,4 +45,18 @@ public class HistoricoComprasController :BaseController
         var historico = await _historicoComprasService.ObterPorId(id);
         return OkResponse(historico);
     }
+    
+    [HttpGet("Buscar/{id}")]
+    [Authorize]
+    [SwaggerOperation(Summary = "Realiza uma busca de históricos de compras.", Tags = new[] { "HistoricoCompras" })]
+    [ProducesResponseType(typeof(HistoricoComprasDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Buscar([FromBody] BuscarHistoricoComprasDto dto)
+    {
+        var historico = await _historicoComprasService.Buscar(dto);
+        return OkResponse(historico);
+    }
 }
