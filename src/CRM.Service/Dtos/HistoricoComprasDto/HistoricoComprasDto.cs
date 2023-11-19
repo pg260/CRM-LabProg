@@ -11,5 +11,5 @@ public class HistoricoComprasDto
     public string MetodoDePagameto { get; set; } = null!;
     public DateTime CriadoEm { get; set; }
 
-    public List<CompraDto> Compras { get; set; } = new();
+    public List<ComprasFeedbackDto> Compras { get; set; } = new();
 }

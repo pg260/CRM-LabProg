@@ -9,6 +9,7 @@ namespace CRM.Service.Dtos.ProdutoDtos
         public string? Nome { get; set; }
         public float? Valor { get; set; }
         public string? Descricao { get; set; }
+        public float? NotaMinima { get; set; }
         public string? Cidade { get; set; }
         public string? Estado { get; set; }
         public DateTime? DataInicio { get; set; }
@@ -35,6 +36,8 @@ namespace CRM.Service.Dtos.ProdutoDtos
                 query = query.Where(p => p.CriadoEm <= DataFim.Value);
             if(Desativado != null)
                 query = query.Where(p => p.Desativado == Desativado);
+            if (NotaMinima != null)
+                query = query.Where(c => c.Nota >= NotaMinima);
         }
         
         public override void ApplyOrdenation(ref IQueryable<Produto> query)
@@ -48,6 +51,7 @@ namespace CRM.Service.Dtos.ProdutoDtos
                     "descricao" => query.OrderByDescending(p => p.Descricao),
                     "cidade" => query.OrderByDescending(p => p.Cidade),
                     "estado" => query.OrderByDescending(p => p.Estado),
+                    "nota" => query.OrderByDescending(p => p.Nota),
                     _ => query.OrderByDescending(p => p.CriadoEm)
                 };
             }
@@ -59,6 +63,7 @@ namespace CRM.Service.Dtos.ProdutoDtos
                 "descricao" => query.OrderBy(p => p.Descricao),
                 "cidade" => query.OrderBy(p => p.Cidade),
                 "estado" => query.OrderBy(p => p.Estado),
+                "nota" => query.OrderBy(p => p.Nota),
                 _ => query.OrderBy(p => p.CriadoEm)
             };
         }

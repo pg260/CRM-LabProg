@@ -3,6 +3,7 @@ using CRM.Domain.Entities;
 using CRM.Domain.Pagination;
 using CRM.Service.Dtos.CarrinhoDtos;
 using CRM.Service.Dtos.ComprasDto;
+using CRM.Service.Dtos.Feedback;
 using CRM.Service.Dtos.HistoricoComprasDto;
 using CRM.Service.Dtos.PaginatedSearch;
 using CRM.Service.Dtos.ProdutoCarrinhoDtos;
@@ -30,6 +31,7 @@ public class AutoMapperProfile : Profile
         CreateMap<Produto, ProdutoDto>().ReverseMap();
         CreateMap<Produto, EditarProdutoDto>().ReverseMap();
         CreateMap<PaginatedResult<Produto>, PagedDto<ProdutoDto>>().ReverseMap();
+        CreateMap<Produto, ProdutoFeedbackDto>().ReverseMap();
         
         #endregion
 
@@ -47,13 +49,23 @@ public class AutoMapperProfile : Profile
         CreateMap<HistoricoCompras, HistoricoComprasDto>()
             .ForMember(dest => dest.Compras, opt => opt.MapFrom(src => src.Compras))
             .ReverseMap();
+        CreateMap<PaginatedResult<HistoricoCompras>, PagedDto<HistoricoComprasDto>>().ReverseMap();
 
         #endregion
 
         #region Compras
 
         CreateMap<Compra, CompraDto>().ReverseMap();
+        CreateMap<Compra, ComprasFeedbackDto>().ReverseMap();
 
         #endregion"
+
+        #region Feedback
+
+        CreateMap<Feedback, FeedbackDto>().ReverseMap();
+        CreateMap<PaginatedResult<Feedback>, PagedDto<FeedbackDto>>().ReverseMap();
+        CreateMap<Feedback, AddFeedbackDto>().ReverseMap();
+
+        #endregion
     }
 }

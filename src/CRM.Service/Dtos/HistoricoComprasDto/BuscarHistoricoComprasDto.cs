@@ -1,5 +1,6 @@
 ﻿using CRM.Domain.Entities;
 using CRM.Service.Dtos.PaginatedSearch;
+using Microsoft.EntityFrameworkCore;
 
 namespace CRM.Service.Dtos.HistoricoComprasDto;
 
@@ -8,15 +9,16 @@ public class BuscarHistoricoComprasDto : PaginatedSearchDto<HistoricoCompras>
     public int? UserId { get; set; }
     public float? ValorMaximo { get; set; }
     public string? MetodoDePagamento { get; set; }
-    public DateTime? Datainicial { get; set; }
+    public DateTime? DataInicial { get; set; }
     public DateTime? DataFinal { get; set; }
     
     public override void ApplyFilters(ref IQueryable<HistoricoCompras> query)
     {
+        query = query.Include(c => c.Compras).ThenInclude(c => c.Produto);
         if (UserId != null) query = query.Where(c => c.UserId == UserId);
         if (ValorMaximo != null) query = query.Where(c => c.ValorTotal <= ValorMaximo);
         if (MetodoDePagamento != null) query = query.Where(c => c.MetodoDePagameto.Contains(MetodoDePagamento));
-        if (Datainicial != null) query = query.Where(c => c.CriadoEm >= Datainicial);
+        if (DataInicial != null) query = query.Where(c => c.CriadoEm >= DataInicial);
         if (DataFinal != null) query = query.Where(c => c.CriadoEm <= DataFinal);
     }
     

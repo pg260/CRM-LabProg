@@ -14,12 +14,14 @@ namespace CRM.Service.Services
     {
          private readonly IProdutoRepository _produtoRepository;
          private readonly IAuthenticatedUser _authenticatedUser;
+         private readonly IFeedbackRepository _feedbackRepository;
         
         public ProdutoService(IMapper mapper, INotificator notificator, IProdutoRepository produtoRepository,
-            IAuthenticatedUser authenticatedUser) : base(mapper, notificator)
+            IAuthenticatedUser authenticatedUser, IFeedbackRepository feedbackRepository) : base(mapper, notificator)
         {
             _produtoRepository = produtoRepository;
             _authenticatedUser = authenticatedUser;
+            _feedbackRepository = feedbackRepository;
         }
 
         public async Task<ProdutoDto?> Criar(AddProdutoDto dto)
@@ -123,11 +125,16 @@ namespace CRM.Service.Services
         public async Task<ProdutoDto?> ObterPorId(int id)
         {
             var produto = await _produtoRepository.ObterPorId(id);
-            if (produto != null)
-                return Mapper.Map<ProdutoDto>(produto);
+            if (produto == null)
+            {
+                Notificator.HandleNotFound();
+                return null;
+            }
             
-            Notificator.HandleNotFound();
-            return null;
+            var dto = Mapper.Map<ProdutoDto>(produto);
+            dto.QuantidadeAvaliacoes = await _feedbackRepository.ContagemAvaliacaoProduto(id);
+
+            return dto;
         }
 
         public async Task<PagedDto<ProdutoDto>> Pesquisar(BuscarProdutoDto dto)
@@ -135,7 +142,7 @@ namespace CRM.Service.Services
             var produto = await _produtoRepository.Search(dto);
             return Mapper.Map<PagedDto<ProdutoDto>>(produto);
         }
-        
+
         private bool Validar(Produto produto)
         {
             if (produto.Validar(out ValidationResult validationResult)) return true;

@@ -1,6 +1,7 @@
 ﻿using CRM.API.Responses;
 using CRM.Service.Contracts;
 using CRM.Service.Dtos.HistoricoComprasDto;
+using CRM.Service.Dtos.PaginatedSearch;
 using CRM.Service.NotificatorConfig;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace CRM.API.Controllers;
 
-[Microsoft.AspNetCore.Components.Route("v1/HistoricoCompras")]
+[Route("v1/HistoricoCompras")]
 public class HistoricoComprasController :BaseController
 {
     public HistoricoComprasController(INotificator notificator, IHistoricoComprasService historicoComprasService) : base(notificator)
@@ -46,15 +47,14 @@ public class HistoricoComprasController :BaseController
         return OkResponse(historico);
     }
     
-    [HttpGet("Buscar/{id}")]
+    [HttpGet("Buscar")]
     [Authorize]
     [SwaggerOperation(Summary = "Realiza uma busca de históricos de compras.", Tags = new[] { "HistoricoCompras" })]
-    [ProducesResponseType(typeof(HistoricoComprasDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PagedDto<HistoricoComprasDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Buscar([FromBody] BuscarHistoricoComprasDto dto)
+    public async Task<IActionResult> Buscar([FromQuery] BuscarHistoricoComprasDto dto)
     {
         var historico = await _historicoComprasService.Buscar(dto);
         return OkResponse(historico);

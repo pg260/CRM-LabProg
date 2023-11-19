@@ -56,7 +56,7 @@ public class BaseDbContext : DbContext, IUnitOfWork
                 {
                     property.SetColumnType("datetime");
                     property.SetValueConverter(new ValueConverter<DateTime, DateTime>(
-                        v => v, // Conversão direta de DateTime
+                        v => v,
                         v => v
                     ));
                 }

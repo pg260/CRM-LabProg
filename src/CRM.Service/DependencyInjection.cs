@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using AutoMapper;
+using CRM.Domain.Contracts.Repositories;
 using CRM.Infra;
 using CRM.Service.Contracts;
 using CRM.Service.MapperConfig;
@@ -30,6 +31,7 @@ public static class DependencyInjection
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ICarrinhoService, CarrinhoService>();
         services.AddScoped<IHistoricoComprasService, HistoricoComprasService>();
+        services.AddScoped<IFeedbackService, FeedbackService>();
     }
 
     public static void CreateAutomapper(this IServiceCollection services)
