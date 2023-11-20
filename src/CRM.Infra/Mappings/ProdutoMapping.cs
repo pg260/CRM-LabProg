@@ -25,6 +25,9 @@ public class ProdutoMapping : IEntityTypeConfiguration<Produto>
             .IsRequired();
 
         builder.Property(c => c.Nota);
+        
+        builder.Property(c => c.TotalVendas)
+            .IsRequired();
 
         builder.Property(c => c.Cidade)
             .IsRequired()

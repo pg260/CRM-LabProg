@@ -1,4 +1,6 @@
-﻿namespace CRM.Domain.Entities;
+﻿using FluentValidation.Results;
+
+namespace CRM.Domain.Entities;
 
 public class ProdutoCarrinho : BaseEntity
 {

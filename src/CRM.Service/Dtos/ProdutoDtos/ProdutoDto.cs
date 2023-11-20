@@ -7,6 +7,7 @@ public class ProdutoDto
     public float Valor { get; set; }
     public float? Nota { get; set; }
     public Dictionary<string, int> QuantidadeAvaliacoes { get; set; } = null!;
+    public int TotalVendas { get; set; }
     public string Descricao { get; set; } = null!;
     public string Cidade { get; set; } = null!;
     public string Estado { get; set; } = null!;

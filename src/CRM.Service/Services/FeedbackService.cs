@@ -6,7 +6,6 @@ using CRM.Service.Contracts;
 using CRM.Service.Dtos.Feedback;
 using CRM.Service.Dtos.PaginatedSearch;
 using CRM.Service.NotificatorConfig;
-using FluentValidation.Results;
 
 namespace CRM.Service.Services;
 
@@ -28,33 +27,13 @@ public class FeedbackService : BaseService, IFeedbackService
 
     public async Task Criar(AddFeedbackDto dto)
     {
-        var compra = await _comprasRepository.FirstOrDefault(c =>
-            c.UserId == _authenticatedUser.Id && c.ProdutoId == dto.ProdutoId);
-
-        if (compra == null)
-        {
-            Notificator.Handle("Você não realizou uma compra para este produto.");
-            return;
-        }
-        
-        var produto = await _produtoRepository.FirstOrDefault(c => c.Id == compra.ProdutoId && !c.Desativado);
-        if (produto == null)
-        {
-            Notificator.Handle("Este produto não existe mais.");
-            return;
-        }
-
         var feedback = Mapper.Map<Feedback>(dto);
-        feedback.CompraId = compra.Id;
-        feedback.UserId = _authenticatedUser.Id;
-        feedback.ProdutoId = produto.Id;
 
-        if (!Validar(feedback)) return;
+        var dic = await Validar(feedback);
+        if (dic == null) return;
 
-        _feedbackRepository.Criar(feedback);
-
-        produto.Nota = await _feedbackRepository.MediaAvaliacoes(produto.Id, feedback.Avaliacao);
-        _produtoRepository.Editar(produto);
+        _feedbackRepository.Criar(dic.Keys.First());
+        _produtoRepository.Editar(dic.Values.First());
 
         if (!await Commit()) Notificator.Handle("Ocorreu um erro ao salvar o feedback.");
     }
@@ -89,10 +68,43 @@ public class FeedbackService : BaseService, IFeedbackService
 
     private async Task<bool> Commit() => await _feedbackRepository.UnitOfWork.Commit();
 
-    private bool Validar(Feedback feedback)
+    private async Task<Dictionary<Feedback, Produto>?> Validar(Feedback feedback)
     {
-        if (feedback.Validar(out ValidationResult validationResult)) return true;
-        Notificator.Handle(validationResult.Errors);
-        return false;
+        if (!feedback.Validar(out var validationResult))
+        {
+            Notificator.Handle(validationResult.Errors);
+            return null;  
+        }
+        
+        var compra = await _comprasRepository.FirstOrDefault(c =>
+            c.UserId == _authenticatedUser.Id && c.ProdutoId == feedback.ProdutoId);
+        if (compra == null)
+        {
+            Notificator.Handle("Você não realizou uma compra para este produto.");
+            return null;
+        }
+        
+        var produto = await _produtoRepository.FirstOrDefault(c => c.Id == compra.ProdutoId && !c.Desativado);
+        if (produto == null)
+        {
+            Notificator.Handle("Este produto não existe mais.");
+            return null;
+        }
+        
+        feedback.CompraId = compra.Id;
+        feedback.UserId = _authenticatedUser.Id;
+
+        if (await _feedbackRepository.Any(c =>
+                c.ProdutoId == feedback.ProdutoId && feedback.UserId == _authenticatedUser.Id))
+        {
+            Notificator.Handle("Você já avaliou esse produto.");
+            return null;
+        }
+
+        produto.Nota = await _feedbackRepository.MediaAvaliacoes(produto.Id, feedback.Avaliacao);
+
+        var dicionario = new Dictionary<Feedback, Produto>();
+        dicionario.Add(feedback, produto);
+        return dicionario;
     }
 }

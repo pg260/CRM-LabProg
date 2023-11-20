@@ -1,3 +1,6 @@
+using CRM.Domain.Validators;
+using FluentValidation.Results;
+
 namespace CRM.Domain.Entities;
 
 public class Produto : BaseEntity
@@ -6,7 +9,8 @@ public class Produto : BaseEntity
     public string Nome { get; set; } = null!;
     public float Valor { get; set; }
     public string Descricao { get; set; } = null!;
-    public float? Nota { get; set; }
+    public float Nota { get; set; }
+    public int TotalVendas { get; set; }
     public string Cidade { get; set; } = null!;
     public string Estado { get; set; } = null!;
     public bool Desativado { get; set; }
@@ -14,4 +18,10 @@ public class Produto : BaseEntity
     public virtual List<ProdutoCarrinho> ProdutoCarrinhos { get; set; } = new();
     public virtual List<Feedback> Feedbacks { get; set; } = new();
     public virtual User User { get; set; } = null!;
+    
+    public override bool Validar(out ValidationResult validationResult)
+    {
+        validationResult = new ProdutoValidator().Validate(this);
+        return validationResult.IsValid;
+    }
 }

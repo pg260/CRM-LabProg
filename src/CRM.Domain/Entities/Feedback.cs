@@ -1,3 +1,6 @@
+using CRM.Domain.Validators;
+using FluentValidation.Results;
+
 namespace CRM.Domain.Entities;
 
 public class Feedback : BaseEntity
@@ -11,4 +14,10 @@ public class Feedback : BaseEntity
     public virtual User User { get; set; } = null!;
     public virtual Produto Produto { get; set; } = null!;
     public virtual Compra Compra { get; set; } = null!;
+    
+    public override bool Validar(out ValidationResult validationResult)
+    {
+        validationResult = new FeedbackValidator().Validate(this);
+        return validationResult.IsValid;
+    }
 }

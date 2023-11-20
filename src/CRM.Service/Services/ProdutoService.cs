@@ -15,8 +15,8 @@ namespace CRM.Service.Services
          private readonly IProdutoRepository _produtoRepository;
          private readonly IAuthenticatedUser _authenticatedUser;
          private readonly IFeedbackRepository _feedbackRepository;
-        
-        public ProdutoService(IMapper mapper, INotificator notificator, IProdutoRepository produtoRepository,
+
+         public ProdutoService(IMapper mapper, INotificator notificator, IProdutoRepository produtoRepository,
             IAuthenticatedUser authenticatedUser, IFeedbackRepository feedbackRepository) : base(mapper, notificator)
         {
             _produtoRepository = produtoRepository;
@@ -130,10 +130,9 @@ namespace CRM.Service.Services
                 Notificator.HandleNotFound();
                 return null;
             }
-            
+
             var dto = Mapper.Map<ProdutoDto>(produto);
             dto.QuantidadeAvaliacoes = await _feedbackRepository.ContagemAvaliacaoProduto(id);
-
             return dto;
         }
 

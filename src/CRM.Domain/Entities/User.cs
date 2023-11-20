@@ -1,3 +1,6 @@
+using CRM.Domain.Validators;
+using FluentValidation.Results;
+
 namespace CRM.Domain.Entities;
 
 public class User : BaseEntity
@@ -13,4 +16,10 @@ public class User : BaseEntity
     public virtual List<HistoricoCompras>? HistoricoCompras { get; set; } = new();
     public virtual List<Feedback> Feedbacks { get; set; } = new();
     public virtual List<Produto> Produtos { get; set; } = new();
+    
+    public override bool Validar(out ValidationResult validationResult)
+    {
+        validationResult = new UserValidator().Validate(this);
+        return validationResult.IsValid;
+    }
 }
